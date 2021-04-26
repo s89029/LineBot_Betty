@@ -16,6 +16,7 @@ import requests
 import re
 import random
 import codecs
+import Selffunction as SelF
 #引用設定
 config = configparser.ConfigParser()
 config.read("config.ini")
@@ -32,18 +33,7 @@ album_id = config['imgur_api']['Album_ID_HS']
 client = ImgurClient(client_id, client_secret)
 images = client.get_album_images(album_id)
 
-def PickDrink():
-    f = open('DrinkShop.txt','r',encoding='utf-8')
-    shoplist = []
-    for shop in f.readlines():
-        k=shop.strip('\n')
-        shoplist.append(k)
-    ran = random.randint(0,len(shoplist)-1)
-    todaydrink = shoplist[ran]
-    f.close()
-    return todaydrink
-
-print ('123test finish')
+print (SelF.PickDrink())
 
 @app.route("/")
 def test():
@@ -68,15 +58,19 @@ def callback():
     return 'OK'
 
 
+
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    if event.message.text == '抽飲料':
-        todaydrink = PickDrink()
+    #判斷事件
+    a = event.message.text
+    Ifcom = SelF.checkevent(a)
+    if Ifcom[0] == 'Yui抽飲料':
+        todaydrink = SelF.PickDrink()
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=todaydrink))
         return 0
-    if event.message.text == '抽圖片':
+    if Ifcom[0] == 'Yui抽圖片':
         client = ImgurClient(client_id, client_secret)
         images = client.get_album_images(album_id)
         index = random.randint(0, len(images) - 1)
@@ -87,6 +81,7 @@ def handle_message(event):
         line_bot_api.reply_message(
             event.reply_token,
             image_message)
+        print ('收到圖片')
         return 0
 
 if __name__ == "__main__":
