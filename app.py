@@ -64,13 +64,13 @@ def handle_message(event):
     #判斷事件
     a = event.message.text
     Ifcom = SelF.checkevent(a)
-    if Ifcom[0] == 'Yui抽飲料':
+    if Ifcom[0] == '抽飲料':
         todaydrink = SelF.PickDrink()
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=todaydrink))
         return 0
-    if Ifcom[0] == 'Yui抽圖片':
+    if Ifcom[0] == '抽圖片':
         client = ImgurClient(client_id, client_secret)
         images = client.get_album_images(album_id)
         index = random.randint(0, len(images) - 1)
@@ -81,7 +81,6 @@ def handle_message(event):
         line_bot_api.reply_message(
             event.reply_token,
             image_message)
-        print ('收到圖片')
         return 0
 
 if __name__ == "__main__":
