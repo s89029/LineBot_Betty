@@ -17,3 +17,7 @@ def PickDrink():
     todaydrink = shoplist[ran]
     f.close()
     return todaydrink
+def totalcost(event):
+    cost = int(event.split('/'))
+    cost += cost
+    return cost

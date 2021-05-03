@@ -37,7 +37,7 @@ print (SelF.PickDrink())
 
 @app.route("/")
 def test():
-    return "ccc"
+    return "kkk"
 
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -57,13 +57,12 @@ def callback():
 
     return 'OK'
 
-
-
+Ordertemp=[]
+totalcost = 0
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     #判斷事件
-    a = event.message.text
-    Ifcom = SelF.checkevent(a)
+    Ifcom = SelF.checkevent(event.message.text)
     if Ifcom[0] == '抽飲料':
         todaydrink = SelF.PickDrink()
         line_bot_api.reply_message(
@@ -82,6 +81,30 @@ def handle_message(event):
             event.reply_token,
             image_message)
         return 0
+    if event.message.text == '點單':
+        orderhelp = "開始點餐，格式: 點餐@Jeremy/珍珠奶茶無糖少冰/60"
+        openorder = 1
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=orderhelp))
+        return 0
+    if Ifcom[0] == '點餐':
+        Ordertemp.append(Ifcom[1])
+        totalcost = SelF.totalcost(event.message.text)
+        return 0
+    if event.message.text == '收單':
+        openorder = 0
+        Ordertemp.append(totalcost)
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=Ordertemp))
+        Ordertemp.clear()
+        return 0
+    if event.message.text == '測試':
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text='測試功能'))
+
 
 if __name__ == "__main__":
     app.run()
