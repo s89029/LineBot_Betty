@@ -57,11 +57,17 @@ def callback():
 
     return 'OK'
 
-Ordertemp=[]
+Ordertemp=''
+Order =''
 totalcost = 0
+openorder = 0
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     #判斷事件
+    global openorder 
+    global Order
+    global totalcost
+    global Ordertemp
     Ifcom = SelF.checkevent(event.message.text)
     if Ifcom[0] == '抽飲料':
         todaydrink = SelF.PickDrink()
@@ -81,29 +87,55 @@ def handle_message(event):
             event.reply_token,
             image_message)
         return 0
-    if event.message.text == '點單':
-        orderhelp = "開始點餐，格式: 點餐@Jeremy/珍珠奶茶無糖少冰/60"
+    if event.message.text == '點餐':
+        orderhelp = "開始點餐，格式: 點@Jeremy@珍珠奶茶無糖少冰@60"
         openorder = 1
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=orderhelp))
         return 0
-    if Ifcom[0] == '點餐':
-        Ordertemp.append(Ifcom[1])
-        totalcost = SelF.totalcost(event.message.text)
+    if Ifcom[0] == '點':
+        if openorder == 1:
+            #profile = line_bot_api.get_profile(event.source.user_id)
+            #name = profile.display_name
+            Order = Order + Ifcom[1] + '\n'
+            Ordertemp = Ordertemp + Ifcom[1] +'-'+Ifcom[2]+'-金額'+Ifcom[3]+'\n'
+            totalcost = totalcost + int(Ifcom[3])
+            line_bot_api.reply_message(
+            event.reply_token,[TextSendMessage(text='點單成功,以下為已經點過的人'),TextSendMessage(text=Order)]
+            )
         return 0
-    if event.message.text == '收單':
+    if Ifcom[0] == '收單':
         openorder = 0
-        Ordertemp.append(totalcost)
+        cost = '總金額'+str(totalcost)
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text=Ordertemp))
-        Ordertemp.clear()
+            [TextSendMessage(text=Ordertemp),TextSendMessage(text= cost)])
+        Ordertemp=''
+        Order = ''
+        totalcost = 0
         return 0
     if event.message.text == '測試':
+        profile = line_bot_api.get_profile(event.source.user_id)
+        name = profile.display_name 
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text='測試功能'))
+            TextSendMessage(text=name))
+        return 0
+    if Ifcom[0] == '你說':
+        index = random.randint(0,2)
+        def matching_dict(type):
+            types = {
+                 0: 'Betty覺得是這樣沒錯',
+                 1: 'Betty不這麼認為',
+                 2: '我不知道'
+        }
+            return types.get(type, '無優惠')
+        replytext = matching_dict(index)
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=replytext))
+        return 0
 
 
 if __name__ == "__main__":
