@@ -136,7 +136,15 @@ def handle_message(event):
             event.reply_token,
             TextSendMessage(text=replytext))
         return 0
-
+    if Ifcom[0] == '熱量':
+        s = SelF.foodfat(Ifcom[1])
+        fat = s[0][2]
+        unit = s[0][3]
+        message = Ifcom[1]+'的熱量為'+str(fat)+'大卡 '+ unit
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=message))
+        return 0
 
 if __name__ == "__main__":
     app.run()

@@ -2,6 +2,7 @@
 import random
 import re
 import codecs
+import sqlite3
 
 def checkevent(event):
     checkcontain = event.split('@')
@@ -21,3 +22,13 @@ def totalcost(event):
     cost = int(event.split('/'))
     cost += cost
     return cost
+
+def foodfat(event):
+    dbfile = "FoodFat.db"
+    conn = sqlite3.connect(dbfile)
+    cursor = conn.execute("select * from FoodFat where foodname is '{}'".format(event))
+    s=[]
+    for row in cursor:
+        s.append(row)
+    conn.close
+    return s

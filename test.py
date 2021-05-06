@@ -1,14 +1,14 @@
 
 import Selffunction as SelF
+import sqlite3
 
-tes = "點@jeremy@無糖奶茶@60"
-tes2 ="點@jess@無糖紅茶@30"
+sl = input ('請輸入:')
+dbfile = "FoodFat.db"
+conn = sqlite3.connect(dbfile)
+cursor = conn.execute("select * from FoodFat where foodname is '{}'".format(sl))
+s=[]
+for row in cursor:
+    s.append(row)
 
-a = SelF.checkevent(tes)
-b = SelF.checkevent(tes2)
-
-co =[]
-co.append(a[1:4])
-print (co)
-co.append(b[1:4])
-print(co)
+print (s[0][2])
+conn.close
