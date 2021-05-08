@@ -95,15 +95,13 @@ def handle_message(event):
             TextSendMessage(text=orderhelp))
         return 0
     if Ifcom[0] == '點':
-        if openorder == 1:
             #profile = line_bot_api.get_profile(event.source.user_id)
             #name = profile.display_name
-            Order = Order + Ifcom[1] + '\n'
-            Ordertemp = Ordertemp + Ifcom[1] +'-'+Ifcom[2]+'-金額'+Ifcom[3]+'\n'
-            totalcost = totalcost + int(Ifcom[3])
-            line_bot_api.reply_message(
-            event.reply_token,[TextSendMessage(text='點單成功,以下為已經點過的人'),TextSendMessage(text=Order)]
-            )
+        Order = Order + Ifcom[1] + '\n'
+        Ordertemp = Ordertemp + Ifcom[1] +'-'+Ifcom[2]+'-金額'+Ifcom[3]+'\n'
+        totalcost = totalcost + int(Ifcom[3])
+        line_bot_api.reply_message(
+        event.reply_token,[TextSendMessage(text='點單成功,以下為已經點過的人'),TextSendMessage(text=Order)])
         return 0
     if Ifcom[0] == '收單':
         openorder = 0
