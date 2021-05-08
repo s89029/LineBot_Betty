@@ -3,6 +3,15 @@ import random
 import re
 import codecs
 import sqlite3
+from imgurpython import ImgurClient
+from bs4 import BeautifulSoup
+import configparser
+
+config = configparser.ConfigParser()
+config.read("config.ini")
+client_id = config['imgur_api']['Client_ID']
+client_secret = config['imgur_api']['Client_Secret']
+album_id = config['imgur_api']['Album_ID_HS']
 
 def checkevent(event):
     checkcontain = event.split('@')
@@ -67,3 +76,11 @@ def totalorder(event):
     conn.commit()
     conn.close()
     return strtotal
+def getmenu(event):
+    dbfile = "FoodFat.db"
+    conn = sqlite3.connect(dbfile)
+    cursor = conn.execute("select ImgurLink from FoodMenu where Shop is '{}'".format(event))
+    for row in cursor:
+        menulink="".join(row)
+    conn.close
+    return menulink

@@ -135,6 +135,15 @@ def handle_message(event):
             event.reply_token,
             TextSendMessage(text=message))
         return 0
+    if Ifcom[0] == '菜單':
+        menulink = SelF.getmenu(Ifcom[1])
+        image_message = ImageSendMessage(
+            original_content_url=menulink,
+            preview_image_url=menulink)
+        line_bot_api.reply_message(
+            event.reply_token,
+            [image_message,TextSendMessage(text=menulink)])
+        return 0
 
 if __name__ == "__main__":
     app.run()
