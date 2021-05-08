@@ -142,7 +142,7 @@ def handle_message(event):
             preview_image_url=menulink)
         line_bot_api.reply_message(
             event.reply_token,
-            [image_message,TextSendMessage(text=menulink)])
+            [image_message,TextSendMessage(text='以上菜單僅供參考')])
         return 0
 
 if __name__ == "__main__":
