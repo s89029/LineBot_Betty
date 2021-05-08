@@ -57,17 +57,10 @@ def callback():
 
     return 'OK'
 
-Ordertemp=''
-Order =''
-totalcost = 0
-openorder = 0
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     #判斷事件
-    global openorder 
-    global Order
-    global totalcost
-    global Ordertemp
+
     Ifcom = SelF.checkevent(event.message.text)
     if Ifcom[0] == '抽飲料':
         todaydrink = SelF.PickDrink()
@@ -97,21 +90,20 @@ def handle_message(event):
     if Ifcom[0] == '點':
             #profile = line_bot_api.get_profile(event.source.user_id)
             #name = profile.display_name
-        Order = Order + Ifcom[1] + '\n'
-        Ordertemp = Ordertemp + Ifcom[1] +'-'+Ifcom[2]+'-金額'+Ifcom[3]+'\n'
-        totalcost = totalcost + int(Ifcom[3])
-        line_bot_api.reply_message(
-        event.reply_token,[TextSendMessage(text='點單成功,以下為已經點過的人'),TextSendMessage(text=Order)])
+        Suorder = SelF.saveorder(event.message.text)
+        message = Ifcom[1] + '點單成功'
+        if Suorder == 0:
+            line_bot_api.reply_message(
+            event.reply_token,TextSendMessage(text=message))
         return 0
     if Ifcom[0] == '收單':
-        openorder = 0
-        cost = '總金額'+str(totalcost)
+        totalcost = str(SelF.totalcost(event))
+        Sutotal = SelF.totalorder(event)
+        message = Sutotal + '總金額為' + totalcost
         line_bot_api.reply_message(
             event.reply_token,
-            [TextSendMessage(text=Ordertemp),TextSendMessage(text= cost)])
-        Ordertemp=''
-        Order = ''
-        totalcost = 0
+            TextSendMessage(text=message))
+
         return 0
     if event.message.text == '測試':
         profile = line_bot_api.get_profile(event.source.user_id)
