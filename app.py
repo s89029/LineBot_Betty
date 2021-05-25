@@ -112,7 +112,7 @@ def handle_message(event):
             event.reply_token,
             TextSendMessage(text=name))
         return 0
-    if Ifcom[0] == '你說':
+    if Ifcom[0] == '提問':
         index = random.randint(0,2)
         def matching_dict(type):
             types = {
@@ -143,6 +143,12 @@ def handle_message(event):
         line_bot_api.reply_message(
             event.reply_token,
             [image_message,TextSendMessage(text='以上菜單僅供參考')])
+        return 0
+    if Ifcom[0] == '食記'or'影評'or'遊記':
+        resturl = 'https://www.pixnet.net/tags/{}'.format(Ifcom[1])
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=resturl))
         return 0
 
 if __name__ == "__main__":
