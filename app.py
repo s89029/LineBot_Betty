@@ -144,7 +144,7 @@ def handle_message(event):
             event.reply_token,
             [image_message,TextSendMessage(text='以上菜單僅供參考')])
         return 0
-    if Ifcom[0] == '食記'or'影評'or'遊記':
+    if Ifcom[0] in ['食記','影評','遊記']:
         resturl = 'https://www.pixnet.net/tags/{}'.format(Ifcom[1])
         line_bot_api.reply_message(
             event.reply_token,
