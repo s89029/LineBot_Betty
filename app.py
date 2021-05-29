@@ -16,6 +16,7 @@ import requests
 import re
 import random
 import codecs
+import wikipedia
 import Selffunction as SelF
 #引用設定
 config = configparser.ConfigParser()
@@ -149,6 +150,13 @@ def handle_message(event):
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=resturl))
+        return 0
+    if Ifcom[0] in ['wiki','Wiki','WIKI']:
+        wikipedia.wikipedia.API_URL='http://zh.wikipedia.org/w/api.php'
+        wikiresult = str(wikipedia.summary(Ifcom[1]))
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=wikiresult))
         return 0
 
 if __name__ == "__main__":
