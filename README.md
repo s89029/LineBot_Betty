@@ -26,3 +26,5 @@
 + DrinkShop.txt儲存飲料店清單
 + 藉由Pixnet之網頁查詢功能實作在LineBot上的食記與遊記查詢
 + test.py用來在功能設計初期測試是否可以正常運行
++ Selffunction.py為細節功能處理 
++ app.py負責處理接收到的資訊並丟到Selffunction.py進行處理，並輸出處理結果給Lint
