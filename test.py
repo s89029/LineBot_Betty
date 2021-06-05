@@ -15,3 +15,6 @@ wikipedia.wikipedia.API_URL='http://zh.wikipedia.org/w/api.php'
 print (wikipedia.API_URL)
 print(wikipedia.summary("國立中山大學"))
 
+
+
+# 這個檔案是用來測試功能的，不會實際運行在LineBot裡
